@@ -1,7 +1,7 @@
     import { createStore,combineReducers,applyMiddleware } from "redux";
     import proudctReducer from "./productReducer";
     import cartReducer from "./cartReducer";
-    import { composeWithDevTools } from "redux-devtools-extension";
+    import { composeWithDevTools } from "@redux-devtools/extension";
     import { watchProductSaga } from "./Saga/productSaga";
     import createSagaMiddleware from "redux-saga";
 
