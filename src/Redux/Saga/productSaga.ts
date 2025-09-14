@@ -8,7 +8,7 @@ try {
    const data=yield call([response,"json"])
    const convertedPrice=data.products.map((item:any)=>({
     ...item,price:Number((item.price*83).toFixed(2))
-   }))
+   })).sort((a:any,b:any)=>b.id-a.id) 
    yield put(fetchProductsSuccess(convertedPrice))
 } catch (error:any) {
  yield put(fetchProductsFailure(error.message))   
