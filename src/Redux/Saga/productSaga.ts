@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
-import { FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_FAILURE } from '../productAction'
+import { FETCH_PRODUCTS_REQUEST} from '../productAction'
 import { fetchProductsSuccess,fetchProductsFailure } from '../productAction'
 // Worker Saga
 function* fetchProductSaga():Generator<any,any,any> {
