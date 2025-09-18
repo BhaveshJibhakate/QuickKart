@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 const StyledInput = styled.input`
@@ -25,7 +24,7 @@ const StyledButton = styled.button`
 
 const Login: React.FC = () => {
   const [user, setUser] = useState({ username: "", password: "" });
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const handlelogin = () => {
     console.log("function triggered after login button is clicked");
   };
