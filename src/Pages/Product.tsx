@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "../Component/ProductCard";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProductsRequest } from "../Redux/productAction";
 import { ClipLoader } from "react-spinners";
+import Pagination from "../Component/Pagination";
 
 const Products: React.FC = () => {
   const { loading, error, Allproducts } = useSelector(
@@ -13,7 +14,14 @@ const Products: React.FC = () => {
   useEffect(() => {
     dispatch(fetchProductsRequest());
   }, [dispatch]);
-
+  //pagination related logic
+  const itemsperPage=12;
+  const [currentpage,setcurrentPage]=useState<number>(1)
+  const lastindex=itemsperPage*currentpage
+  const firstindex=lastindex-itemsperPage
+  const totalpage=Math.ceil(Allproducts.length/itemsperPage)
+  const visibleProducts=Allproducts.slice(firstindex,lastindex)
+  //
   return (
     <div style={{ padding: "20px", backgroundColor: "antiquewhite" }}>
       <h2
@@ -46,7 +54,7 @@ const Products: React.FC = () => {
           gap: "20px",
         }}
       >
-        {Allproducts.map((item: any) => (
+        {visibleProducts.map((item: any) => (
           <ProductCard
             key={item.id}
             id={item.id}
@@ -57,6 +65,7 @@ const Products: React.FC = () => {
           />
         ))}
       </div>
+      <Pagination currentPage={currentpage} totalpage={totalpage} onPageChange={setcurrentPage}/>
     </div>
   );
 };

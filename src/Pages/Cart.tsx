@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import CartCard from "../Component/CartCard";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import Pagination from "../Component/Pagination";
 
 const CartContainer = styled.div`
   display: flex;
@@ -72,14 +73,22 @@ const Cart: React.FC = () => {
     (acc: number, item: any) => acc + item.quantity,
     0
   );
-
+  // pagination
+  const itemsperPage = 3;
+  const [currentpage, setcurrentPage] = useState<number>(1);
+  const lastindex = itemsperPage * currentpage;
+  const firstindex = lastindex - itemsperPage;
+  const totalpage = Math.ceil(cartItems.length / itemsperPage);
+  const visibleCartItems = cartItems.slice(firstindex, lastindex);
+  //
   return (
     <>
       {cartItems.length > 0 ? (
-        <CartContainer>
+        <>
+        <CartContainer className="bhavesh">
           {/* Left side - Cart items */}
           <CartItems>
-            {cartItems.map((item: any) => (
+            {visibleCartItems.map((item: any) => (
               <CartCard
                 key={item.id}
                 id={item.id}
@@ -103,12 +112,15 @@ const Cart: React.FC = () => {
             <ProceedButton>Proceed to Buy</ProceedButton>
           </CartSummary>
         </CartContainer>
+           <Pagination
+            currentPage={currentpage}
+            totalpage={totalpage}
+            onPageChange={setcurrentPage}
+          />
+          </>
       ) : (
         <EmptyCart>
-          <img
-            src="empty-cart.png"
-            alt="empty cart"
-          />
+          <img src="empty-cart.png" alt="empty cart" />
         </EmptyCart>
       )}
     </>
