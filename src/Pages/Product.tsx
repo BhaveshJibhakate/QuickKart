@@ -65,7 +65,13 @@ const Products: React.FC = () => {
           />
         ))}
       </div>
-      <Pagination currentPage={currentpage} totalpage={totalpage} onPageChange={setcurrentPage}/>
+          {visibleProducts.length > 0 && (
+          <Pagination
+          currentPage={currentpage}
+          totalpage={totalpage}
+          onPageChange={setcurrentPage}
+        />
+      )}
     </div>
   );
 };
