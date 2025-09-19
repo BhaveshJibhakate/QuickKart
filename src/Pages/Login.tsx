@@ -1,69 +1,74 @@
-import React, { useState } from "react";
 import styled from "styled-components";
+import { loginUser } from "../Redux/authActions";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
+const StyledButton = styled.button`
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  background-color: #4163e1;
+  font-size: 16px;
+  padding: 8px;
+  transition: background 0.3s ease;
+  margin-top: 20px;
+`;
 const StyledInput = styled.input`
   width: 100%;
   padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 6px;
+  box-sizing: border-box;
   border: 1px solid #ccc;
+  border-radius: 6px;
   font-size: 14px;
+  margin-bottom: 10px;
 `;
-
-const StyledButton = styled.button` 
-        width: 100%;
-        padding: 10px;
-        background-color:#4CAF50;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background 0.3s ease; 
+const Container = styled.div`
+  width: 350px;
+  height: 350px;
+  border: 1px solid #ccc;
+  background-color: #c1cdef;
+  padding: 10px;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: "0 8px 16px rgba(0, 0, 0, 0.2)";
 `;
-
-const Login: React.FC = () => {
+const Login = () => {
+  const navigate = useNavigate();
+  const isAllowed = useSelector((state: any) => state.auth.isAuthenticated);
   const [user, setUser] = useState({ username: "", password: "" });
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const handlelogin = () => {
     console.log("function triggered after login button is clicked");
+    dispatch(loginUser(user));
   };
+  useEffect(() => {
+    if (isAllowed) {
+      navigate("/products");
+    }
+  }, [isAllowed]);
+  
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "darkcyan",
-        height: "300px",
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: "white",
-          padding: "40px",
-          borderRadius: "10px",
-          textAlign: "center",
-          width: "350px",
-          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
-        }}
-      >
-        <h1 style={{ marginBottom: "20px", color: "#333" }}>Login</h1>
-        <StyledInput
-          type="text"
-          placeholder="enter username"
-          value={user.username}
-          onChange={(e) => setUser({ ...user, username: e.target.value })}
-        />
-        <StyledInput
-          type="password"
-          placeholder="enter password"
-          value={user.password}
-          onChange={(e) => setUser({ ...user, password: e.target.value })}
-        />
-        <StyledButton onClick={handlelogin}>Login</StyledButton>
-      </div>
-    </div>
+    <Container>
+      <h1 style={{ textAlign: "center" }}>Login</h1>
+      <StyledInput
+        type="text"
+        placeholder="enter your name"
+        value={user.username}
+        onChange={(e) => setUser({ ...user, username: e.target.value })}
+      />
+      <StyledInput
+        type="password"
+        placeholder="enter your password"
+        value={user.password}
+        onChange={(e) => setUser({ ...user, password: e.target.value })}
+      />
+      <StyledButton onClick={handlelogin}>Login</StyledButton>
+      <p>Don't have account <Link to="/register">sign up</Link></p>
+    </Container>
   );
 };
 

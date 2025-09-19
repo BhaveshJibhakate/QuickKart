@@ -59,6 +59,7 @@ const Pagination: React.FC<PaginationProps> = ({
         </StyledButton>
         {buttonCount.map((i) => (
           <StyledButton
+            key={i}
             $bg="lightblue"
             onClick={() => onPageChange(i)}
             $active={i === currentPage}

@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../Redux/cartActions";
 import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
 
 interface ProductProps {
   id: number;
@@ -98,23 +99,36 @@ const AddButton = styled.button`
   }
 `;
 
-const ProductCard: React.FC<ProductProps> = ({ id, title, price, rating, images }) => {
+const ProductCard: React.FC<ProductProps> = ({
+  id,
+  title,
+  price,
+  rating,
+  images,
+}) => {
+  const notify = () =>
+    toast.success("Added Successfully", {
+      position: "top-right",
+      autoClose: 2000,
+      theme: "colored",
+    });
   const { Allproducts } = useSelector((state: any) => state.products);
   const dispatch = useDispatch();
 
   const handleclick = (id: number) => {
     const AddableProduct = Allproducts.find((items: any) => items.id === id);
     dispatch(addToCart(AddableProduct));
-    alert("Added Successfully");
+    notify();
   };
 
   return (
     <Card>
-      <ProductImage src={images} alt={title} loading="lazy"/>
+      <ProductImage src={images} alt={title} loading="lazy" />
       <Title>{title}</Title>
       <Price>Price: Rs.{price}</Price>
       <Rating>⭐ {rating}</Rating>
       <AddButton onClick={() => handleclick(id)}>Add to Cart</AddButton>
+      <ToastContainer />
     </Card>
   );
 };

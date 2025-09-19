@@ -61,6 +61,7 @@ const ProceedButton = styled.button`
 
 const Cart: React.FC = () => {
   const { cartItems } = useSelector((state: any) => state.cart);
+  const { currentUser } = useSelector((state: any) => state.auth);
 
   // total price
   const totalPrice = cartItems.reduce(
@@ -85,39 +86,42 @@ const Cart: React.FC = () => {
     <>
       {cartItems.length > 0 ? (
         <>
-        <CartContainer className="bhavesh">
-          {/* Left side - Cart items */}
-          <CartItems>
-            {visibleCartItems.map((item: any) => (
-              <CartCard
-                key={item.id}
-                id={item.id}
-                title={item.title}
-                price={item.price}
-                images={item.images[0]}
-                quantity={item.quantity}
-              />
-            ))}
-          </CartItems>
+          <CartContainer className="bhavesh">
+            {/* Left side - Cart items */}
+            <CartItems>
+              {visibleCartItems.map((item: any) => (
+                <CartCard
+                  key={item.id}
+                  id={item.id}
+                  title={item.title}
+                  price={item.price}
+                  images={item.images[0]}
+                  quantity={item.quantity}
+                />
+              ))}
+            </CartItems>
 
-          {/* Right side - Summary */}
-          <CartSummary>
-            <h3>Cart Summary</h3>
-            <p>
-              Total Items: <b>{totalItems}</b>
-            </p>
-            <p>
-              Total Price: <b>Rs.{totalPrice.toFixed(2)}</b>
-            </p>
-            <ProceedButton>Proceed to Buy</ProceedButton>
-          </CartSummary>
-        </CartContainer>
-           <Pagination
+            {/* Right side - Summary */}
+            <CartSummary>
+              <h3>Cart Summary</h3>
+              <p>
+                Order for:   <b>{currentUser}</b>
+              </p>
+              <p>
+                Total Items: <b>{totalItems}</b>
+              </p>
+              <p>
+                Total Price: <b>Rs.{totalPrice.toFixed(2)}</b>
+              </p>
+              <ProceedButton>Proceed to Buy</ProceedButton>
+            </CartSummary>
+          </CartContainer>
+          <Pagination
             currentPage={currentpage}
             totalpage={totalpage}
             onPageChange={setcurrentPage}
           />
-          </>
+        </>
       ) : (
         <EmptyCart>
           <img src="empty-cart.png" alt="empty cart" />

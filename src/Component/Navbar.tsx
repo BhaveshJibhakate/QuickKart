@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { logoutUser } from "../Redux/authActions";
 
 const Nav = styled.nav`
   display: flex;
@@ -74,11 +75,16 @@ const CartCount = styled.span`
 
 const Navbar: React.FC = () => {
   const { cartItems } = useSelector((state: any) => state.cart);
+  const { isAuthenticated } = useSelector((state: any) => state.auth);
+
   const totalItems = cartItems.reduce(
     (acc: number, item: any) => acc + item.quantity,
     0
   );
-
+  const dispatch = useDispatch();
+  const handlelogout = () => {
+    dispatch(logoutUser());
+  };
   return (
     <Nav>
       <Logo>QuickKart</Logo>
@@ -91,6 +97,7 @@ const Navbar: React.FC = () => {
             {totalItems > 0 && <CartCount>{totalItems}</CartCount>}
           </CartWrapper>
         </StyledLink>
+        {isAuthenticated && <button onClick={handlelogout}>Logout</button>}
       </LinksContainer>
     </Nav>
   );
