@@ -13,7 +13,7 @@ function App() {
    return (
     <div>
       <Router>
-       {<Navbar />} 
+       {<Navbar />}
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/products" element={<ProtectedRoute><Products/></ProtectedRoute>} />

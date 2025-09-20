@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const StyledButton = styled.button`
   border: none;
@@ -27,18 +28,26 @@ const StyledInput = styled.input`
   margin-bottom: 10px;
 `;
 const Container = styled.div`
-  width: 350px;
-  height: 350px;
+  max-width:400px;
+  min-height:300px;
+  width:100%;
   border: 1px solid #ccc;
   background-color: #c1cdef;
   padding: 10px;
   margin: 20px auto;
   border-radius: 8px;
   box-shadow: "0 8px 16px rgba(0, 0, 0, 0.2)";
+
+   @media (max-width: 480px) {
+    padding: 15px;
+    margin: 20px auto;
+  }
 `;
 const Login = () => {
   const navigate = useNavigate();
   const isAllowed = useSelector((state: any) => state.auth.isAuthenticated);
+  const Error = useSelector((state: any) => state.auth.error);
+
   const [user, setUser] = useState({ username: "", password: "" });
   const dispatch = useDispatch();
   const handlelogin = () => {
@@ -49,8 +58,17 @@ const Login = () => {
     if (isAllowed) {
       navigate("/products");
     }
-  }, [isAllowed]);
-  
+    if (Error) {
+      const notify = () =>
+        toast.error("Invalid Username or Password", {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "colored",
+        });
+      notify();
+    }
+  }, [isAllowed,Error,navigate]);
+
   return (
     <Container>
       <h1 style={{ textAlign: "center" }}>Login</h1>
@@ -67,9 +85,11 @@ const Login = () => {
         onChange={(e) => setUser({ ...user, password: e.target.value })}
       />
       <StyledButton onClick={handlelogin}>Login</StyledButton>
-      <p>Don't have account <Link to="/register">sign up</Link></p>
+      <ToastContainer />
+      <p>
+        Don't have account <Link to="/register">sign up</Link>
+      </p>
     </Container>
   );
 };
-
 export default Login;

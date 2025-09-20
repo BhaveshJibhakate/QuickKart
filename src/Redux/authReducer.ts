@@ -3,7 +3,8 @@ import { LOGIN_USER, LOGOUT_USER, REGISTER_USER } from "./authActions";
 const initialstate = {
     user: [{ name: "Bhavesh Jibhakate", username: "bhavesh@gmail.com", password: "12345" }, { name: "Digesh Jibhakate", username: "digesh@gmail.com", password: "12345" }],
     isAuthenticated: false,
-    currentUser: null
+    currentUser: null,
+    error:null
 }
 
 const authReducer = (state = initialstate, action: any) => {
@@ -14,12 +15,13 @@ const authReducer = (state = initialstate, action: any) => {
             return {
                 ...state,
                 isAuthenticated:true,
-                currentUser:User.name
+                currentUser:User.name,
+                error:null
             }
-        }else return {...state}
+        }else return {...state,error:"Invalid username or password"}
         case LOGOUT_USER:
             return {
-                ...state,isAuthenticated:false
+                ...state,isAuthenticated:false,currentUser:null
             }
         case REGISTER_USER:
             return {

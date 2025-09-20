@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { registerUser } from "../Redux/authActions";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -27,14 +26,20 @@ const StyledInput = styled.input`
   margin-bottom: 10px;
 `;
 const Container = styled.div`
-  width: 350px;
-  height: 350px;
+  max-width: 400px;
+  min-height: 300px;
+  width:100%;
   border: 1px solid #ccc;
   background-color: #61e1b2;
   padding: 10px;
   margin: 20px auto;
   border-radius: 8px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 480px) {
+    padding: 15px;
+    margin: 20px auto;
+  }
 `;
 interface User {
   name: string;
@@ -42,14 +47,11 @@ interface User {
   password: string;
 }
 const Register = () => {
-  const navigate = useNavigate();
-
   const [user, setUser] = useState<User>({
     name: "",
     username: "",
     password: "",
   });
-
   const dispatch = useDispatch();
   const notify = () =>
     toast.success("Registerd Successfully", {

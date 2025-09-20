@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { logoutUser } from "../Redux/authActions";
+import { CLEAR_CART } from "../Redux/cartActions";
+import { CLEAR_PRODUCTS } from "../Redux/productAction";
 
 const Nav = styled.nav`
   display: flex;
@@ -72,6 +74,25 @@ const CartCount = styled.span`
   border-radius: 50%;
   padding: 3px 6px;
 `;
+const LogoutButton = styled.button`
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: transparent;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 5px 10px;
+
+  &:hover {
+    background: #61dafb;
+    color: #000;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+`;
 
 const Navbar: React.FC = () => {
   const { cartItems } = useSelector((state: any) => state.cart);
@@ -84,6 +105,8 @@ const Navbar: React.FC = () => {
   const dispatch = useDispatch();
   const handlelogout = () => {
     dispatch(logoutUser());
+    dispatch({ type: CLEAR_CART });
+    dispatch({ type: CLEAR_PRODUCTS });
   };
   return (
     <Nav>
@@ -97,7 +120,9 @@ const Navbar: React.FC = () => {
             {totalItems > 0 && <CartCount>{totalItems}</CartCount>}
           </CartWrapper>
         </StyledLink>
-        {isAuthenticated && <button onClick={handlelogout}>Logout</button>}
+        {isAuthenticated && (
+          <LogoutButton onClick={handlelogout}>Logout</LogoutButton>
+        )}
       </LinksContainer>
     </Nav>
   );

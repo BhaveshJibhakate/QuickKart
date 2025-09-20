@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-const StyledButton=styled.button`
+interface ButtonProps {
+    active:boolean;
+}
+const StyledButton=styled.button<ButtonProps>`
 border:none;
 padding:5px;
 border-radius:5px;
@@ -9,11 +13,13 @@ font-size:15px;
 font-weight:bold;
 background-color:antiquewhite;
 cursor:pointer;
+color:${(props:any)=>props.active ? "red":"black"};
 `
 interface CategoriesProps {
     setProducts:Function;
 }
 const Categories: React.FC<CategoriesProps> = ({setProducts}) => {
+  const [activeCategory,setactiveCategory]=useState("")
   const { Allproducts } = useSelector((state: any) => state.products);
 
   const category = [
@@ -33,29 +39,18 @@ const Categories: React.FC<CategoriesProps> = ({setProducts}) => {
   const handleclick = (cat: string) => {
     if (cat === "all") {
       setProducts(Allproducts);
+      setactiveCategory(cat)
     } else {
       const categorywiseProduct = Allproducts.filter(
         (item: any) => item.category === cat.toLocaleLowerCase()
       );
-    //   setProducts(categorywiseProduct);
     setProducts(categorywiseProduct)
+    setactiveCategory(cat)
     }
   };
 
   return (
     <div style={{ padding: "20px", backgroundColor: "antiquewhite" }}>
-      {/* <h2
-        style={{
-          marginBottom: "20px",
-          textAlign: "center",
-          fontSize: "2rem",
-          fontWeight: "bold",
-        }}
-      >
-        Shop Products by Category
-      </h2> */}
-
-      {/* Category Buttons */}
       <div
         style={{
           display: "flex",
@@ -68,6 +63,7 @@ const Categories: React.FC<CategoriesProps> = ({setProducts}) => {
       >
         <StyledButton
           onClick={() => handleclick("all")}
+          active={activeCategory==="all"}
         >
           All
         </StyledButton>
@@ -75,31 +71,12 @@ const Categories: React.FC<CategoriesProps> = ({setProducts}) => {
           <StyledButton
             key={cat}
             onClick={() => handleclick(cat)}
+            active={activeCategory===cat}
           >
             {cat}
           </StyledButton>
         ))}
       </div>
-
-      {/* Product Grid */}
-      {/* <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: "20px",
-        }}
-      >
-        {Products.map((item: any) => (
-          <ProductCard
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            price={item.price}
-            rating={item.rating}
-            images={item.images[0]}
-          />
-        ))}
-      </div> */}
     </div>
   );
 };
