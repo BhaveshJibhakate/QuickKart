@@ -4,9 +4,14 @@ import { useNavigate } from "react-router-dom";
 
 const HomeContainer = styled.div`
   text-align: center;
-  padding: 40px 20px;
+  padding: 20px;
   background-color: #f8f9fa;
   min-height: 80vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const HeroSection = styled.div`
@@ -15,6 +20,7 @@ const HeroSection = styled.div`
   h1 {
     font-size: 2.5rem;
     color: #333;
+    margin: 0;
 
     span {
       color: #ff6600;
@@ -44,11 +50,18 @@ const HeroSection = styled.div`
   }
 `;
 
+const LogosWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 30px;
+`;
+
 const Logo = styled.img`
-  max-width: 400px;
+  max-width: 350px;
   width: 100%;
   height: auto;
-  margin-bottom: 40px;
 
   @media (max-width: 480px) {
     max-width: 250px;
@@ -89,8 +102,11 @@ const Home: React.FC = () => {
         <p>Your one-stop shop for all your needs. Shop smart, shop quick!</p>
       </HeroSection>
 
-      {/* Logo Image */}
-      <Logo src="QuickKart_img.png" alt="QuickKart Logo" />
+      {/* Logos in Flexbox */}
+      <LogosWrapper>
+        <Logo src="offerElect.png" alt="Electronics Offer" />
+        <Logo src="offerBeauty.png" alt="Beauty Offer" />
+      </LogosWrapper>
 
       {/* Call to Action */}
       <ShopButton onClick={() => navigate("/products")}>Shop Now</ShopButton>
